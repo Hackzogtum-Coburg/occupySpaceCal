@@ -199,6 +199,11 @@ function getOccupations(){
       Bitte bleibt fair und gebt jedem eine Chance. <br>
       Das Ziel sollte bleiben, dass aktuell nicht mehr als 2 Personen gleichzeitig anwesend sind.<br>
     </p>
+    <p>
+      Der Kalender kann auch unter <br>
+      https://<?php print($_SERVER[HTTP_HOST].$_SERVER[REQUEST_URI]) ?>/ical.php<br>
+      als ical read-only abonniert werden. 
+    </p>
   </div>
 
 </div>
