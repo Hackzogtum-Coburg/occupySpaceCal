@@ -177,6 +177,33 @@ function getOccupations(){
 </head>
 <body>
 
+<div id="myModal" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <p>
+      Der Kalender dient als Übersicht, ob bereits jemand vor hat, den Space zu besuchen.<br>
+      Die zweite Spalte ist immer "Heute".<br>
+      Um einen Besuch anzukündigen kann jeder hier einfach einen Bereich okkupieren bzw. für sich reservieren.
+    </p>
+    <p>
+      Um zu reservieren klickt als erstes in die Zelle des Beginns Eures Besuchs. Diese wird in Magenta eingefärbt.<br>
+      Ein zweiter Klick auf das Ende des Zeitraums trägt den Termin ein. (Das geht sofort)<br>
+      Alternativ kann man auch die Eingabefelder unten verwenden. Und dann auf "Occupy" klicken.
+    </p>
+    <p>
+      Der Button "Undo" entfernt den letzten Eintrag.
+    </p>
+    <p>
+      Es gibt keine Kollisionsdetektion und alles ist komplett anonym. <br>
+      Bitte bleibt fair und gebt jedem eine Chance. <br>
+      Das Ziel sollte bleiben, dass aktuell nicht mehr als 2 Personen gleichzeitig anwesend sind.<br>
+    </p>
+  </div>
+
+</div>
+
+<button id="myBtn">How to occupy</button>
 <table class="cal">
 <?php
 print(tbl());
@@ -204,5 +231,6 @@ Occupy Space: Click cells or use this form:<br>
 <input type="submit" name="undo" value="undo last">
 </form>
 
+<script type=text/javascript src=modal.js></script>
 </body>
 </html>
