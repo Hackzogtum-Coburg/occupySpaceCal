@@ -1,0 +1,23 @@
+body {
+  background:grey;
+}
+table {
+  width:100%;
+  table-layout:fixed;
+}
+
+table, table td, table th
+{
+  border: 1pt solid black;
+  border-collapse:collapse;
+  padding:5px;
+  text-align:center;
+}
+.today{
+  background:darkgreen;
+}
+
+.occupied {
+  background:darkred;
+  border:0pt;
+}
