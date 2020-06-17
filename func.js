@@ -27,7 +27,8 @@ function occupy(st, end){
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      location.reload();
+      //this reloads without reentering postdata
+      window.location.href = window.location.href ;
     }
   };
  //  window.location.href = window.location.href + "?st=" + st + "&end=" + end;
@@ -35,3 +36,4 @@ function occupy(st, end){
   xhttp.send();
 
 }
+

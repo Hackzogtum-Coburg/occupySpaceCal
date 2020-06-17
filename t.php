@@ -4,6 +4,20 @@ $DAYS = 14;
 occupyFromForm();
 occupyFromJS();
 canOpen();
+undo();
+
+function undo(){
+  if(isset($_POST["undo"])){
+    $occupations = getOccupations();
+
+    array_splice($occupations, -1);
+
+    $fp = fopen("occ.json", "w");
+    fwrite($fp, json_encode($occupations, JSON_PRETTY_PRINT));
+    fclose($fp);
+
+  }
+}
 
 function canOpen(){
   if(isset($_GET["open"]) && $_GET["open"]=="1"){
@@ -174,6 +188,10 @@ to:
 <input type="time" name="endt" placeholder="endt">
 <br>
 <input type="submit" name="submit" value="occupy">
+</form>
+
+<form action="" method=post>
+<input type="submit" name="undo" value="undo last">
 </form>
 
 </body>
