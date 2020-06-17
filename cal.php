@@ -1,9 +1,23 @@
 <?php
 
 $DAYS = 14;
-occupy();
-
+occupyFromForm();
+occupyFromJS();
 canOpen();
+undo();
+
+function undo(){
+  if(isset($_POST["undo"])){
+    $occupations = getOccupations();
+
+    array_splice($occupations, -1);
+
+    $fp = fopen("occ.json", "w");
+    fwrite($fp, json_encode($occupations, JSON_PRETTY_PRINT));
+    fclose($fp);
+
+  }
+}
 
 function canOpen(){
   if(isset($_GET["open"]) && $_GET["open"]=="1"){
@@ -15,24 +29,15 @@ function canOpen(){
   }
 }
 
-function occupy(){
-  if( 
-    isset($_POST['startd']) && 
-    isset($_POST['startt']) && 
-    isset($_POST['endd']) && 
-    isset($_POST['endt'])
-  ){
-
-    $st = DateTime::createFromFormat("Y-m-d H:i", $_POST['startd'].$_POST['startt']);
-    $end= DateTime::createFromFormat("Y-m-d H:i", $_POST['endd'].$_POST['endt']);
-
+function occupy($st, $end){
     if(!$st || !$end){
       die("sth. went wrong");
     }
 
-    if(occupied($st) || occupied($end)){
-      die("allready occupied");
-    }
+    //we don't really need this, since it doesn't change anything for the process
+//    if(occupied($st) || occupied($end)){
+//      die("allready occupied");
+//    }
 
     $occupations = getOccupations();
     $occupations[] = array(
@@ -43,7 +48,37 @@ function occupy(){
     $fp = fopen("occ.json", "w");
     fwrite($fp, json_encode($occupations, JSON_PRETTY_PRINT));
     fclose($fp);
+}
 
+function occupyFromJS(){
+  if(
+    isset($_GET["st"]) && $_GET["st"]!="" && 
+    isset($_GET["end"]) && $_GET["end"]!="" 
+  ){
+
+    $st = DateTime::createFromFormat("Ymd_H:i", $_GET['st']);
+    $end = DateTime::createFromFormat("Ymd_H:i", $_GET['end']);
+
+    $end->add(new DateInterval("PT1H"));
+
+    occupy($st, $end);
+
+  }
+}
+
+function occupyFromForm(){
+  if( 
+    isset($_POST['startd']) && 
+    isset($_POST['startt']) && 
+    isset($_POST['endd']) && 
+    isset($_POST['endt'])
+  ){
+
+    $st = DateTime::createFromFormat("Y-m-d H:i", $_POST['startd'].$_POST['startt']);
+    $end= DateTime::createFromFormat("Y-m-d H:i", $_POST['endd'].$_POST['endt']);
+
+    occupy($st, $end);
+    
   }
 }
 
@@ -72,7 +107,7 @@ function body(){
     $res .= "<tr><td>". $dt->format("H:00") ."</td>";
     for($d=0; $d<$DAYS; $d++){
       $class = occupied(tblIndexToDateTime($d, $h)) ? "occupied" : "";
-      $res .= "<td class='$class'>";
+      $res .= "<td id='".tblIndexToDateTime($d, $h)->format("Ymd_H:i")."' onclick=handleClick('".tblIndexToDateTime($d, $h)->format("Ymd_H:i")."') class='$class'>";
       $res .= "</td>";
     }
     $res .= "</tr>";
@@ -109,6 +144,12 @@ function within($dt, $occ){
 }
 
 function getOccupations(){
+  if(! file_exists("occ.json")){
+    $fp = fopen("occ.json", "w");
+    fwrite($fp, json_encode(array(), JSON_PRETTY_PRINT));
+    fclose($fp);
+  }
+
   $json = file_get_contents("occ.json");
   $dec = json_decode($json, true);
 
@@ -132,11 +173,18 @@ function getOccupations(){
 <html>
 <head>
  <link rel="stylesheet" type="text/css" href="./style.css">
+ <script type=text/javascript src=func.js></script>
 </head>
 <body>
 
+<table>
+<?php
+print(tbl());
+?>
+</table>
+
 <form action="" method=post>
-Occupy Space:<br>
+Occupy Space: Click cells or use this form:<br>
 from:
 <input type="date" name="startd" placeholder="startd">
 <input type="time" name="startt" placeholder="startt">
@@ -148,11 +196,9 @@ to:
 <input type="submit" name="submit" value="occupy">
 </form>
 
-<table>
-<?php
-print(tbl());
-?>
-</table>
+<form action="" method=post>
+<input type="submit" name="undo" value="undo last">
+</form>
 
 </body>
 </html>
