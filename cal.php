@@ -177,22 +177,26 @@ function getOccupations(){
 </head>
 <body>
 
-<table>
+<table class="cal">
 <?php
 print(tbl());
 ?>
 </table>
 
-<form action="" method=post>
 Occupy Space: Click cells or use this form:<br>
-from:
-<input type="date" name="startd" placeholder="startd">
-<input type="time" name="startt" placeholder="startt">
-<br>
-to:
-<input type="date" name="endd" placeholder="endd">
-<input type="time" name="endt" placeholder="endt">
-<br>
+<form action="" method=post>
+<table class=inputform>
+<tr>
+  <td>from:</td>
+  <td><input type="date" name="startd" placeholder="startd"></td>
+  <td><input type="time" name="startt" placeholder="startt"></td>
+</tr>
+<tr>
+  <td>to:</td>
+  <td><input type="date" name="endd" placeholder="endd"></td>
+  <td><input type="time" name="endt" placeholder="endt"></td>
+</tr>
+</table>
 <input type="submit" name="submit" value="occupy">
 </form>
 

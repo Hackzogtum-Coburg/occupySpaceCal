@@ -1,12 +1,12 @@
 body {
   background:grey;
 }
-table {
+.cal {
   width:100%;
   table-layout:fixed;
 }
 
-table, table td, table th
+.cal, .cal td, .cal th
 {
   border: 1pt solid black;
   border-collapse:collapse;
