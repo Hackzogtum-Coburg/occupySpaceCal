@@ -21,3 +21,6 @@ table, table td, table th
   background:darkred;
   border:0pt;
 }
+.selected{
+  background:magenta;
+}
